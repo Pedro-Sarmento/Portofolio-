@@ -2,26 +2,27 @@ import customtkinter as ctk
 import controllers.gamefunctions as game_fuc
 import controllers.userfunctions as user_fuc
 
-ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("green")
-root = ctk.CTk()
-
 
 class App:
     def __init__(self):
-        self.root = root
-        self.root.geometry("650x400")
-        self.login_button = ctk.CTkButton(master=self.root, text="Login",
-                                          command=lambda: [self.login_interface(), self.login_button.forget(),
-                                                           self.register_button.forget()])
-        self.login_button.pack(pady=12, padx=10)
-        self.register_button = ctk.CTkButton(master=self.root, text="Register",
-                                             command=lambda: [self.register_interface(), self.register_button.forget(),
-                                                              self.login_button.forget()])
-        self.register_button.pack(pady=12, padx=10)
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("green")
+        self.root = ctk.CTk()
+        self.root.geometry("750x400")
         self.users = []
         self.active_user = None
+        self.home()
         self.root.mainloop()
+
+    def home(self):
+        home_frame = ctk.CTkFrame(master=self.root)
+        home_frame.pack(pady=20, padx=60, fill="both", expand=True)
+        login_button = ctk.CTkButton(master=home_frame, text="Login",
+                                     command=lambda: [self.login_interface(), home_frame.destroy()])
+        login_button.pack(pady=12, padx=10)
+        register_button = ctk.CTkButton(master=home_frame, text="Register",
+                                        command=lambda: [self.register_interface(), home_frame.destroy()])
+        register_button.pack(pady=12, padx=10)
 
     def login_interface(self):
         login_frame = ctk.CTkFrame(master=self.root)
@@ -37,7 +38,8 @@ class App:
             login_password_entry.get(),
             login_frame))
         login_submit_button.pack(pady=12, padx=10)
-        cancel_button = ctk.CTkButton(master=login_frame, text="Cancel", command=lambda: [login_frame.destroy(), App()])
+        cancel_button = ctk.CTkButton(master=login_frame, text="Cancel", command=lambda: [login_frame.destroy(),
+                                                                                          self.home()])
         cancel_button.pack(pady=12, padx=10)
 
     def submit_login(self, username, password, frame):
@@ -69,7 +71,7 @@ class App:
 
         login_submit_button.pack(pady=12, padx=10)
         cancel_button = ctk.CTkButton(master=register_frame, text="Cancel",
-                                      command=lambda: [register_frame.destroy(), App()])
+                                      command=lambda: [register_frame.destroy(), self.home()])
         cancel_button.pack(pady=12, padx=10)
 
     def submit_register(self, username, password, password_repeat, frame):
@@ -82,38 +84,60 @@ class App:
             new_user = user_fuc.submit_register(username, password, password_repeat, self.users)
             self.users.append(new_user)
             frame.destroy()
-            self.active_user = new_user
-            self.menu()
+            self.home()
 
     def menu(self):
-        start_game_button = ctk.CTkButton(master=root, text="New Game", command=lambda: [self.start_game(),
-                                                                                         start_game_button.forget(),
-                                                                                         leaderboards_button.forget()])
+        menu_frame = ctk.CTkFrame(master=self.root)
+        menu_frame.pack(pady=20, padx=60, fill="both", expand=True)
+        start_game_button = ctk.CTkButton(master=menu_frame, text="New Game", command=lambda: [menu_frame.destroy(),
+                                                                                               self.start_game()])
         start_game_button.pack(pady=12, padx=10)
-        leaderboards_button = ctk.CTkButton(master=root, text="Leaderboard",
-                                            command=lambda: [start_game_button.forget(),
-                                                             leaderboards_button.forget(),
-                                                             logout_button.forget(),
+        leaderboards_button = ctk.CTkButton(master=menu_frame, text="Leaderboard",
+                                            command=lambda: [menu_frame.destroy(),
                                                              self.show_leaderboard()])
         leaderboards_button.pack(pady=12, padx=10)
-        logout_button = ctk.CTkButton(master=root, text="Logout", command=lambda: [start_game_button.forget(),
-                                                                                   leaderboards_button.forget(),
-                                                                                   logout_button.forget(),
-                                                                                   self.logout()])
+        logout_button = ctk.CTkButton(master=menu_frame, text="Logout", command=lambda: [menu_frame.destroy(),
+                                                                                         self.logout()])
         logout_button.pack(pady=12, padx=10)
 
     def show_leaderboard(self):
+        leaderboard_frame = ctk.CTkFrame(master=self.root)
+        leaderboard_frame.pack(pady=20, padx=60, fill="both", expand=True)
         leaderboard = game_fuc.get_leaderboard(self.users)
         for r in range(len(leaderboard)):
             for c in range(len(leaderboard[0])):
-                leaderboard_entry = ctk.CTkEntry(master=root, width=200, font=("Arial", 16, "bold"))
+                leaderboard_entry = ctk.CTkEntry(master=leaderboard_frame, width=200, font=("Arial", 16, "bold"))
                 leaderboard_entry.grid(row=r, column=c)
                 leaderboard_entry.insert(-1, leaderboard[r][c])
                 leaderboard_entry.configure(state="disable")
+        back_button = ctk.CTkButton(master=self.root, text="<---", command=lambda: [leaderboard_frame.destroy(),
+                                                                                    back_button.forget(),
+                                                                                    self.menu()])
+        back_button.pack(pady=12, padx=10)
 
     def start_game(self):
-        pass
+        start_game_frame = ctk.CTkFrame(master=self.root)
+        start_game_frame.pack(pady=20, padx=60, fill="both", expand=True)
+        start_game_label = ctk.CTkLabel(master=start_game_frame, text="Who are you playing against?")
+        start_game_label.pack(pady=12, padx=10)
+        start_game_username_entry = ctk.CTkEntry(master=start_game_frame, placeholder_text="Username of the player")
+        start_game_username_entry.pack(pady=12, padx=10)
+        new_game_button = ctk.CTkButton(master=start_game_frame, text="New Game", command=lambda: self.new_game(start_game_username_entry.get(), start_game_frame))
+        new_game_button.pack(pady=12, padx=10)
 
     def logout(self):
         self.active_user = None
-        App()
+        self.home()
+
+    def new_game(self, player2, frame):
+        if type(game_fuc.game(player2, self.users)) is str:
+            label = ctk.CTkLabel(master=frame, text=game_fuc.game(player2, self.users))
+            label.pack(pady=12, padx=10)
+            return
+        else:
+            playing_grid = game_fuc.game(player2, self.users)
+            frame.destroy()
+            game_frame = ctk.CTkFrame(master= self.root)
+            game_frame.pack(pady=20, padx=60, fill="both", expand=True)
+            player1_label = ctk.CTkLabel(master=game_frame, text="Player1's turn to play(Red pieces).")
+            player2_label = ctk.CTkLabel(master=game_frame, text="Player2's turn to play(Red pieces).")
