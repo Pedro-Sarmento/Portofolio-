@@ -10,7 +10,7 @@ root = ctk.CTk()
 class App:
     def __init__(self):
         self.root = root
-        self.root.geometry("500x400")
+        self.root.geometry("650x400")
         self.login_button = ctk.CTkButton(master=self.root, text="Login",
                                           command=lambda: [self.login_interface(), self.login_button.forget(),
                                                            self.register_button.forget()])
@@ -90,13 +90,30 @@ class App:
                                                                                          start_game_button.forget(),
                                                                                          leaderboards_button.forget()])
         start_game_button.pack(pady=12, padx=10)
-        leaderboards_button = ctk.CTkButton(master=root, text="Leaderboard", command=lambda: [self.show_leaderboard(),
-                                                                                              start_game_button.forget(),
-                                                                                              leaderboards_button.forget()])
+        leaderboards_button = ctk.CTkButton(master=root, text="Leaderboard",
+                                            command=lambda: [start_game_button.forget(),
+                                                             leaderboards_button.forget(),
+                                                             logout_button.forget(),
+                                                             self.show_leaderboard()])
         leaderboards_button.pack(pady=12, padx=10)
+        logout_button = ctk.CTkButton(master=root, text="Logout", command=lambda: [start_game_button.forget(),
+                                                                                   leaderboards_button.forget(),
+                                                                                   logout_button.forget(),
+                                                                                   self.logout()])
+        logout_button.pack(pady=12, padx=10)
 
     def show_leaderboard(self):
-        pass
+        leaderboard = game_fuc.get_leaderboard(self.users)
+        for r in range(len(leaderboard)):
+            for c in range(len(leaderboard[0])):
+                leaderboard_entry = ctk.CTkEntry(master=root, width=200, font=("Arial", 16, "bold"))
+                leaderboard_entry.grid(row=r, column=c)
+                leaderboard_entry.insert(-1, leaderboard[r][c])
+                leaderboard_entry.configure(state="disable")
 
     def start_game(self):
         pass
+
+    def logout(self):
+        self.active_user = None
+        App()
