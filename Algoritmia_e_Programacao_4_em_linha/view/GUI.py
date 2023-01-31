@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import controllers.gamefunctions as game_fuc
 import controllers.userfunctions as user_fuc
+from models.user import *
 
 
 class App:
@@ -122,7 +123,9 @@ class App:
         start_game_label.pack(pady=12, padx=10)
         start_game_username_entry = ctk.CTkEntry(master=start_game_frame, placeholder_text="Username of the player")
         start_game_username_entry.pack(pady=12, padx=10)
-        new_game_button = ctk.CTkButton(master=start_game_frame, text="New Game", command=lambda: self.new_game(start_game_username_entry.get(), start_game_frame))
+        new_game_button = ctk.CTkButton(master=start_game_frame, text="New Game",
+                                        command=lambda: self.new_game(start_game_username_entry.get(),
+                                                                      start_game_frame))
         new_game_button.pack(pady=12, padx=10)
 
     def logout(self):
@@ -130,14 +133,36 @@ class App:
         self.home()
 
     def new_game(self, player2, frame):
-        if type(game_fuc.game(player2, self.users)) is str:
-            label = ctk.CTkLabel(master=frame, text=game_fuc.game(player2, self.users))
+        if type(game_fuc.new_game(player2, self.users)) is str:
+            label = ctk.CTkLabel(master=frame, text=game_fuc.new_game(player2, self.users))
             label.pack(pady=12, padx=10)
             return
         else:
-            playing_grid = game_fuc.game(player2, self.users)
+            playing_grid = game_fuc.new_game(player2, self.users)
             frame.destroy()
-            game_frame = ctk.CTkFrame(master= self.root)
+            game_frame = ctk.CTkFrame(master=self.root)
             game_frame.pack(pady=20, padx=60, fill="both", expand=True)
-            player1_label = ctk.CTkLabel(master=game_frame, text="Player1's turn to play(Red pieces).")
-            player2_label = ctk.CTkLabel(master=game_frame, text="Player2's turn to play(Red pieces).")
+            self.update_grid(playing_grid, game_frame, self.active_user.get_username(), player2)
+
+    def update_grid(self, playing_grid, game_frame, players_turn: any, player2):
+        win_condition = False
+        player_label = ctk.CTkLabel(master=self.root, text=players_turn + "'s turn to play(Red pieces).")
+        player_label.pack(pady=12, padx=10)
+        for r in range(len(playing_grid) + 1):
+            for c in range(len(playing_grid[0])):
+                if r <= 5:
+                    playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40)
+                    playing_grid_entry.grid(row=r, column=c)
+                    playing_grid_entry.insert(-1, playing_grid[r][c])
+                    playing_grid_entry.configure(state="disable")
+                else:
+                    playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40)
+                    playing_grid_entry.grid(row=r, column=c)
+                    playing_grid_entry.insert(-1, ctk.CTkButton(master=playing_grid_entry, text="↑",
+                                                                command=lambda: self.place_piece(players_turn,
+                                                                                                 playing_grid,
+                                                                                                 win_condition,
+                                                                                                 player2)))
+
+    def place_piece(self, active_player, grid, win_condition, player2):
+        pass

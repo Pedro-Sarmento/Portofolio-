@@ -14,7 +14,7 @@ def sort_by_win(elem):
     return elem[2]
 
 
-def game(player2, user_list):
+def new_game(player2, user_list):
     user_found = False
     for i in user_list:
         if i.get_username() == player2:
