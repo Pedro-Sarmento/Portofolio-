@@ -141,28 +141,40 @@ class App:
             playing_grid = game_fuc.new_game(player2, self.users)
             frame.destroy()
             game_frame = ctk.CTkFrame(master=self.root)
-            game_frame.pack(pady=20, padx=60, fill="both", expand=True)
+            # game_frame.pack(pady=20, padx=60, fill="both", expand=True)
+            game_frame.grid(sticky="we")
+            game_frame.grid_rowconfigure(0, weight=1)
+            game_frame.grid_columnconfigure(0, weight=1)
             self.update_grid(playing_grid, game_frame, self.active_user.get_username(), player2)
+            self.root.grid_rowconfigure(0, weight=1)
+            self.root.grid_columnconfigure(0, weight=1)
 
     def update_grid(self, playing_grid, game_frame, players_turn: any, player2):
         win_condition = False
-        player_label = ctk.CTkLabel(master=self.root, text=players_turn + "'s turn to play(Red pieces).")
-        player_label.pack(pady=12, padx=10)
+
         for r in range(len(playing_grid) + 1):
             for c in range(len(playing_grid[0])):
                 if r <= 5:
                     playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40)
                     playing_grid_entry.grid(row=r, column=c)
                     playing_grid_entry.insert(-1, playing_grid[r][c])
+                    playing_grid_entry.rowconfigure(r, weight=1)
+                    playing_grid_entry.columnconfigure(c, weight=1)
                     playing_grid_entry.configure(state="disable")
                 else:
-                    playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40)
-                    playing_grid_entry.grid(row=r, column=c)
-                    playing_grid_entry.insert(-1, ctk.CTkButton(master=playing_grid_entry, text="↑",
-                                                                command=lambda: self.place_piece(players_turn,
-                                                                                                 playing_grid,
-                                                                                                 win_condition,
-                                                                                                 player2)))
-
+                    button = ctk.CTkButton(master=game_frame, text="Place", width=40,
+                                           command=lambda: self.place_piece(players_turn,
+                                                                            playing_grid,
+                                                                            win_condition,
+                                                                            player2))
+                    button.grid(row=r, column=c)
+                    button.columnconfigure(c, weight=1)
+                    button.rowconfigure(r, weight=1)
+        player_entry = ctk.CTkEntry(master=game_frame, width=240)
+        player_entry.grid(row=7, column=7)
+        player_entry.insert(-1, players_turn + "'s turn to play(Red pieces).")
+        player_entry.configure(state="disable")
+        player_entry.rowconfigure(0, weight=1)
+        player_entry.columnconfigure(0, weight=1)
     def place_piece(self, active_player, grid, win_condition, player2):
         pass
