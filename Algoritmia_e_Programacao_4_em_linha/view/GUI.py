@@ -105,12 +105,25 @@ class App:
         leaderboard_frame = ctk.CTkFrame(master=self.root)
         leaderboard_frame.pack(pady=20, padx=60, fill="both", expand=True)
         leaderboard = game_fuc.get_leaderboard(self.users)
-        for r in range(len(leaderboard)):
+        for r in range(len(leaderboard) + 1):
             for c in range(len(leaderboard[0])):
-                leaderboard_entry = ctk.CTkEntry(master=leaderboard_frame, width=200, font=("Arial", 16, "bold"))
-                leaderboard_entry.grid(row=r, column=c)
-                leaderboard_entry.insert(-1, leaderboard[r][c])
-                leaderboard_entry.configure(state="disable")
+                if r == 0:
+                    leaderboard_entry = ctk.CTkEntry(master=leaderboard_frame, width=200, font=("Arial", 16, "bold"))
+                    if c == 0:
+                        leaderboard_entry.grid(row=r, column=c)
+                        leaderboard_entry.insert(-1, "Username")
+                    elif c == 1:
+                        leaderboard_entry.grid(row=r, column=c)
+                        leaderboard_entry.insert(-1, "Games Played")
+                    elif c == 2:
+                        leaderboard_entry.grid(row=r, column=c)
+                        leaderboard_entry.insert(-1, "Wins")
+                    leaderboard_entry.configure(state="disable")
+                else:
+                    leaderboard_entry = ctk.CTkEntry(master=leaderboard_frame, width=200, font=("Arial", 16, "bold"))
+                    leaderboard_entry.grid(row=r, column=c)
+                    leaderboard_entry.insert(-1, leaderboard[r-1][c])
+                    leaderboard_entry.configure(state="disable")
         back_button = ctk.CTkButton(master=self.root, text="<---", command=lambda: [leaderboard_frame.destroy(),
                                                                                     back_button.forget(),
                                                                                     self.menu()])
@@ -140,41 +153,94 @@ class App:
         else:
             playing_grid = game_fuc.new_game(player2, self.users)
             frame.destroy()
-            game_frame = ctk.CTkFrame(master=self.root)
-            # game_frame.pack(pady=20, padx=60, fill="both", expand=True)
-            game_frame.grid(sticky="we")
-            game_frame.grid_rowconfigure(0, weight=1)
-            game_frame.grid_columnconfigure(0, weight=1)
-            self.update_grid(playing_grid, game_frame, self.active_user.get_username(), player2)
             self.root.grid_rowconfigure(0, weight=1)
             self.root.grid_columnconfigure(0, weight=1)
+            win_condition = False
+            self.update_grid(playing_grid, self.active_user.get_username(), player2, win_condition)
 
-    def update_grid(self, playing_grid, game_frame, players_turn: any, player2):
-        win_condition = False
+    def update_grid(self, playing_grid, players_turn: any, player2, win_condition):
+        game_frame = ctk.CTkFrame(master=self.root)
+        game_frame.grid()
+        game_frame.grid_rowconfigure(0, weight=1)
+        game_frame.grid_columnconfigure(0, weight=1)
+        button_id = 0
 
-        for r in range(len(playing_grid) + 1):
+        for r in range(1, len(playing_grid) + 2):
             for c in range(len(playing_grid[0])):
-                if r <= 5:
-                    playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40)
-                    playing_grid_entry.grid(row=r, column=c)
-                    playing_grid_entry.insert(-1, playing_grid[r][c])
-                    playing_grid_entry.rowconfigure(r, weight=1)
-                    playing_grid_entry.columnconfigure(c, weight=1)
+                if r <= 6:
+
+                    actual_row = r - 1
+                    actual_column = c
+                    if playing_grid[actual_row][actual_column] == 1:
+                        playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40, bg_color="red")
+
+                    elif playing_grid[actual_row][actual_column] == 2:
+                        playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40, bg_color="blue")
+
+                    else:
+                        playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40)
+
+                    playing_grid_entry.grid(row=r, column=c, sticky="nwe")
+                    playing_grid_entry.insert(-1, playing_grid[actual_row][actual_column])
+                    playing_grid_entry.rowconfigure(0, weight=1)
+                    playing_grid_entry.columnconfigure(0, weight=1)
                     playing_grid_entry.configure(state="disable")
+
                 else:
                     button = ctk.CTkButton(master=game_frame, text="Place", width=40,
-                                           command=lambda: self.place_piece(players_turn,
-                                                                            playing_grid,
-                                                                            win_condition,
-                                                                            player2))
-                    button.grid(row=r, column=c)
-                    button.columnconfigure(c, weight=1)
-                    button.rowconfigure(r, weight=1)
-        player_entry = ctk.CTkEntry(master=game_frame, width=240)
-        player_entry.grid(row=7, column=7)
-        player_entry.insert(-1, players_turn + "'s turn to play(Red pieces).")
-        player_entry.configure(state="disable")
-        player_entry.rowconfigure(0, weight=1)
-        player_entry.columnconfigure(0, weight=1)
-    def place_piece(self, active_player, grid, win_condition, player2):
-        pass
+                                           command=lambda column=button_id: [player_entry.destroy(),
+                                                                             self.place_piece(players_turn,
+                                                                                              playing_grid,
+                                                                                              self.active_user.get_username(),
+                                                                                              player2,
+                                                                                              game_frame,
+                                                                                              column)
+                                                                             ])
+                    button.grid(row=r, column=c, sticky="nwe")
+                    button.columnconfigure(0, weight=1)
+                    button.rowconfigure(0, weight=1)
+                    button_id += 1
+        if win_condition is False:
+            player_entry = ctk.CTkEntry(master=self.root, width=240)
+            player_entry.grid(row=1, column=0)
+            player_entry.insert(-1, players_turn + "'s turn to play.")
+            player_entry.configure(state="disable")
+            player_entry.rowconfigure(0, weight=1)
+            player_entry.columnconfigure(0, weight=1)
+        else:
+            game_frame.destroy()
+            win_entry = ctk.CTkEntry(master=self.root, width=240)
+            win_entry.grid(row=0, column=0)
+            win_entry.insert(-1, players_turn + "is the winner.")
+            win_entry.configure(state="disable")
+            win_entry.rowconfigure(0, weight=1)
+            win_entry.columnconfigure(0, weight=1)
+            for i in self.users:
+                if i.get_username() == player2:
+                    i.add_game_played()
+                    self.active_user.add_game_played()
+                if i.get_username() == players_turn:
+                    i.add_win()
+            home_button = ctk.CTkButton(master=self.root, width=60, text="Home", command=lambda: [win_entry.destroy(),
+                                                                                                  home_button.destroy(),
+                                                                                                  self.menu()])
+            home_button.grid(row=1, column=0)
+            home_button.columnconfigure(0, weight=1)
+            home_button.rowconfigure(1, weight=1)
+
+    def place_piece(self, players_turn, grid, player1, player2, frame, column_id):
+        if players_turn == player1:
+            print(column_id)
+            grid, win_condition = game_fuc.insert_piece1(grid, column_id)
+            frame.destroy()
+            if win_condition is True:
+                return self.update_grid(grid, players_turn, player2, win_condition)
+            return self.update_grid(grid, player2, player2, win_condition)
+
+        else:
+            print(column_id)
+            grid, win_condition = game_fuc.insert_piece2(grid, column_id)
+            frame.destroy()
+            if win_condition is True:
+                return self.update_grid(grid, players_turn, player2, win_condition)
+            return self.update_grid(grid, player1, player2, win_condition)

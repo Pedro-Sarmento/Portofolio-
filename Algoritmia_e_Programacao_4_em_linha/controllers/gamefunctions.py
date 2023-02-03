@@ -30,3 +30,45 @@ def new_game(player2, user_list):
                      [0, 0, 0, 0, 0, 0]]
         return play_grid
 
+
+def check_win_condition(play_grid, player):
+    # Check rows
+    for row in play_grid:
+        for i in range(len(row) - 3):
+            if row[i:i + 4] == [player] * 4:
+                return True
+
+    # Check columns
+    for col in range(len(play_grid[0])):
+        for i in range(len(play_grid) - 3):
+            if [row[col] for row in play_grid[i:i + 4]] == [player] * 4:
+                return True
+
+    # Check diagonals
+    for row in range(len(play_grid) - 3):
+        for col in range(len(play_grid[0]) - 3):
+            if [play_grid[row + i][col + i] for i in range(4)] == [player] * 4:
+                return True
+            if [play_grid[row + 3 - i][col + i] for i in range(4)] == [player] * 4:
+                return True
+    return False
+
+
+def insert_piece1(grid, column_id):
+    for row in range(len(grid) - 1, -1, -1):
+        if grid[row][column_id] == 0:
+            grid[row][column_id] = 1
+            if check_win_condition(grid, 1):
+                return grid, True
+            return grid, False
+    return grid, False
+
+
+def insert_piece2(grid, column_id):
+    for row in range(len(grid) - 1, -1, -1):
+        if grid[row][column_id] == 0:
+            grid[row][column_id] = 2
+            if check_win_condition(grid, 2):
+                return grid, True
+            return grid, False
+    return grid, False
