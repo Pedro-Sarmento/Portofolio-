@@ -1,7 +1,7 @@
 import customtkinter as ctk
+
 import controllers.gamefunctions as game_fuc
 import controllers.userfunctions as user_fuc
-from models.user import *
 
 
 class App:
@@ -13,17 +13,22 @@ class App:
         self.users = []
         self.active_user = None
         self.home()
+        self.root.resizable(False, False)
         self.root.mainloop()
 
     def home(self):
         home_frame = ctk.CTkFrame(master=self.root)
         home_frame.pack(pady=20, padx=60, fill="both", expand=True)
+
         login_button = ctk.CTkButton(master=home_frame, text="Login",
                                      command=lambda: [self.login_interface(), home_frame.destroy()])
         login_button.pack(pady=12, padx=10)
+        login_button.place(x=245, y=110)
+
         register_button = ctk.CTkButton(master=home_frame, text="Register",
                                         command=lambda: [self.register_interface(), home_frame.destroy()])
         register_button.pack(pady=12, padx=10)
+        register_button.place(x=245, y=160)
 
     def login_interface(self):
         login_frame = ctk.CTkFrame(master=self.root)
@@ -86,20 +91,26 @@ class App:
             self.users.append(new_user)
             frame.destroy()
             self.home()
+            user_fuc.save_object(self.users)
 
     def menu(self):
         menu_frame = ctk.CTkFrame(master=self.root)
         menu_frame.pack(pady=20, padx=60, fill="both", expand=True)
+
         start_game_button = ctk.CTkButton(master=menu_frame, text="New Game", command=lambda: [menu_frame.destroy(),
                                                                                                self.start_game()])
         start_game_button.pack(pady=12, padx=10)
+        start_game_button.place(x=245, y=110)
         leaderboards_button = ctk.CTkButton(master=menu_frame, text="Leaderboard",
                                             command=lambda: [menu_frame.destroy(),
                                                              self.show_leaderboard()])
         leaderboards_button.pack(pady=12, padx=10)
+        leaderboards_button.place(x=245, y=160)
+
         logout_button = ctk.CTkButton(master=menu_frame, text="Logout", command=lambda: [menu_frame.destroy(),
                                                                                          self.logout()])
         logout_button.pack(pady=12, padx=10)
+        logout_button.place(x=245, y=210)
 
     def show_leaderboard(self):
         leaderboard_frame = ctk.CTkFrame(master=self.root)
@@ -122,7 +133,7 @@ class App:
                 else:
                     leaderboard_entry = ctk.CTkEntry(master=leaderboard_frame, width=200, font=("Arial", 16, "bold"))
                     leaderboard_entry.grid(row=r, column=c)
-                    leaderboard_entry.insert(-1, leaderboard[r-1][c])
+                    leaderboard_entry.insert(-1, leaderboard[r - 1][c])
                     leaderboard_entry.configure(state="disable")
         back_button = ctk.CTkButton(master=self.root, text="<---", command=lambda: [leaderboard_frame.destroy(),
                                                                                     back_button.forget(),
@@ -132,18 +143,26 @@ class App:
     def start_game(self):
         start_game_frame = ctk.CTkFrame(master=self.root)
         start_game_frame.pack(pady=20, padx=60, fill="both", expand=True)
+
         start_game_label = ctk.CTkLabel(master=start_game_frame, text="Who are you playing against?")
         start_game_label.pack(pady=12, padx=10)
+
         start_game_username_entry = ctk.CTkEntry(master=start_game_frame, placeholder_text="Username of the player")
         start_game_username_entry.pack(pady=12, padx=10)
+        start_game_username_entry.place(x=245, y=110)
+
         new_game_button = ctk.CTkButton(master=start_game_frame, text="New Game",
                                         command=lambda: self.new_game(start_game_username_entry.get(),
                                                                       start_game_frame))
         new_game_button.pack(pady=12, padx=10)
+        new_game_button.place(x=245, y=110)
 
     def logout(self):
         self.active_user = None
         self.home()
+        user_fuc.save_object(self.users)
+
+
 
     def new_game(self, player2, frame):
         if type(game_fuc.new_game(player2, self.users)) is str:
@@ -175,7 +194,8 @@ class App:
                         playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40, bg_color="red")
 
                     elif playing_grid[actual_row][actual_column] == 2:
-                        playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40, bg_color="blue")
+                        playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40, bg_color="blue", fg_color="blue",
+                                                           )
 
                     else:
                         playing_grid_entry = ctk.CTkEntry(master=game_frame, width=40)
@@ -209,18 +229,21 @@ class App:
             player_entry.columnconfigure(0, weight=1)
         else:
             game_frame.destroy()
+
             win_entry = ctk.CTkEntry(master=self.root, width=240)
             win_entry.grid(row=0, column=0)
             win_entry.insert(-1, players_turn + "is the winner.")
             win_entry.configure(state="disable")
             win_entry.rowconfigure(0, weight=1)
             win_entry.columnconfigure(0, weight=1)
+
             for i in self.users:
                 if i.get_username() == player2:
                     i.add_game_played()
                     self.active_user.add_game_played()
                 if i.get_username() == players_turn:
                     i.add_win()
+
             home_button = ctk.CTkButton(master=self.root, width=60, text="Home", command=lambda: [win_entry.destroy(),
                                                                                                   home_button.destroy(),
                                                                                                   self.menu()])
@@ -230,7 +253,6 @@ class App:
 
     def place_piece(self, players_turn, grid, player1, player2, frame, column_id):
         if players_turn == player1:
-            print(column_id)
             grid, win_condition = game_fuc.insert_piece1(grid, column_id)
             frame.destroy()
             if win_condition is True:
@@ -238,7 +260,6 @@ class App:
             return self.update_grid(grid, player2, player2, win_condition)
 
         else:
-            print(column_id)
             grid, win_condition = game_fuc.insert_piece2(grid, column_id)
             frame.destroy()
             if win_condition is True:

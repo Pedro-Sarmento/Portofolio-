@@ -1,4 +1,5 @@
 import models.user as us
+import pickle
 
 
 def submit_login(username, password, user_list):
@@ -21,3 +22,11 @@ def submit_register(username, password, password_repeat, user_list):
         user.set_username(username)
         user.set_password(password)
         return user
+
+
+def save_object(obj):
+    try:
+        with open("data.pickle", "wb") as f:
+            pickle.dump(obj, f, protocol=pickle.HIGHEST_PROTOCOL)
+    except Exception as ex:
+        print("Error during pickling object (Possibly unsupported):", ex)
