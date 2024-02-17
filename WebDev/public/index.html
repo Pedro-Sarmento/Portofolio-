@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lemonade Kickz</title>
+    <script src="scripts/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>  
+    <script src="scripts/menu.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" >
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+      <nav>
+        <ul>
+          <li class="items" onclick="loadHome()"> 
+            <a>Página Inicial</a> 
+          </li>
+          <li class="items" onclick="loadProducts(), listar()"> 
+            <a>Produtos</a> 
+          </li>
+          <li class="items" onclick="loadAbout()"> 
+            <a>Sobre</a> 
+          </li>
+          <li class="items" onclick="loadReviews()"> 
+            <a>Feedback</a>  
+          </li>
+          <!-- <li class="items" onclick="loadContact()">  
+            <a>Contact</a> 
+          </li> -->
+
+          <li class="items">
+            <button id="btnListar" onclick="listar()" style="display: none">Listar dados</button>
+          </li>
+          <li class="items">
+            <button id="API" onclick="loadAPI(), API()">API Pública</button>
+          </li>
+          
+          <li class="items">
+            <button id="login" onclick="login()">Login</button>
+          </li>
+          <li class="items">
+            <button id="logout" onclick="logout()" style="display: none">Logout</button>
+          </li>
+          <li class="items">
+            <button id="registar" onclick="registar()">Registar</button>
+          </li>
+          <li class="items">
+            <button id="remover" onclick="remover()">Remover</button></button>
+          </li>
+          <li class="items">
+            <button id="inserir" onclick="insert()">Inserir</button></button>
+          </li>
+          <li class="items">
+            <button id="cart-button" onclick="ShowCart()">Carrinho</button>
+          </li>
+        </ul>
+        
+      </nav>
+      <div id="divLogin" style="display:none;">
+        <fieldset>
+          <legend id="legenda">Login</legend>
+          <label for="username">Username:</label>
+          <input type="text" name="username" id="username" /><br />
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" />
+          <button id="btnLogin" onclick="loginEnviar()">Enviar</button>
+          <button id="btnRegistar" onclick="registarEnviar()" style="display: none">Enviar Registo</button>
+        </fieldset>
+        
+        <p id="pMsg"></p>
+      </div>
+      <hr />
+    </header>
+    <div id="divListar"></div>
+    <hr />
+    <div class="welcome">
+      <h1 data-text="Lemonade Kickz"><span>Lemonade Kickz</span></h1>
+    </div>
+    <div class="about" style="display:none">
+      <div class="section">
+        <div class="container">
+          <div class="content-section">
+            <div class="title">
+              <h1>Quem somos?</h1>
+            </div>
+            <div class="content">
+              <h3>Somos uma marca com paixão por ténis autênticos e de qualidade.</h3>
+              <p>Somos uma loja de ténis exclusivos, especializada em marcas icónicas como Yeezy e Nike Air Jordan. Fundada por amantes de ténis, a nossa paixão é encontrar e oferecer os ténis mais exclusivos e desejados aos nossos clientes. Acreditamos que os ténis são mais do que simplesmente um item de vestuário, mas sim uma forma de expressão e estilo. Nós selecionamos cuidadosamente cada par de ténis para garantir que oferecemos apenas os melhores produtos de qualidade. Seja um colecionador ou simplesmente alguém que aprecia um bom par de ténis, temos algo para todos. Obrigado por escolher a nossa loja e esperamos servi-lo em breve. </p>
+            </div>
+            <div class="social">
+              <a href="https://www.facebook.com/profile.php?id=100089595909631" target="_blank"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://twitter.com/lemonadedesweb" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <div class="image-section">
+            <img src="https://cdn.discordapp.com/attachments/811261923219603466/1064943951217426582/image-removebg-preview_100.png" alt="Lemonade Kickz Logo">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class = "reviews" style="display:none">
+      <div class="testimonials">
+        <div class="inner">
+            <h1>Reviews de utilizadores</h1>
+            <div class="border"></div>
+            <div class="row">
+              <div class="col">
+                <div class="testimonial">
+                  <img src="https://images.unsplash.com/photo-1541534401786-2077eed87a74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Njl8fFByb2ZpbGUlMjBQaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="fotodeperfil">
+                  <div class="name">João Cajado</div>
+                  <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+              </div>
+              <p>
+                Eu sou um colecionador de ténis há anos e esta loja tem sido a minha go-to para encontrar os pares mais raros e exclusivos. A equipa é incrivelmente útil e sempre disponível para me ajudar a encontrar o que procuro. Eu recomendo esta loja a qualquer amante de ténis.
+              </p>
+            </div>
+          </div>
+          <div class="col">
+            <div class="testimonial">
+              <img src="https://images.unsplash.com/photo-1543529140-86d36880cafd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDZ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="fotodeperfil">
+              <div class="name">Tiago Gamboa</div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p>
+                Eu comprei meu primeiro par de Yeezys na loja e foi uma experiência incrível. A equipa foi muito útil e atenciosa, e eu fiquei muito satisfeito com a qualidade dos ténis. Eu definitivamente voltarei a comprar novamente.
+              </p>
+            </div>
+          </div>
+          <div class="col">
+            <div class="testimonial">
+              <img src="https://images.unsplash.com/photo-1495211895963-08d8812dcbf0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDExfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" alt="fotodeperfil">
+              <div class="name">Pedro Sarmento</div>
+              <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p>
+                Eu comprei um par de Air Jordans para o meu filho e fiquei impressionado com a qualidade e a rapidez do serviço. O preço foi razoável e eu recomendo esta loja a qualquer pessoa que procura ténis exclusivos.
+              </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="cards">
+      <div class="grid">
+        <div class="grid-item">
+          <div class="card">
+            <img class="card-img" src="https://cdn.shopify.com/s/files/1/2358/2817/products/dunk-low-grey-fog-194932_5000x.png?v=1638813865" alt="Nike Dunk Low" />
+            <div class="card-content">
+              <h1 class="card-header">Nike Dunk Low</h1>
+              <p class="card-text">
+                A partir de <strong>130,00€</strong>.
+              </p>
+              
+            </div>
+          </div>
+        </div>
+        <div class="grid-item">
+          <div class="card">
+            <img
+            class="card-img"
+            src="https://cdn.shopify.com/s/files/1/2358/2817/products/yeezy-700-wave-runner-solid-grey-101579_5000x.png?v=1638814800" alt="Yeezy" />
+            <div class="card-content">
+              <h1 class="card-header">Yeezy</h1>
+              <p class="card-text">
+                A partir de <strong>350,00€</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="grid-item">
+          <div class="card">
+            <img class="card-img" src="https://cdn.shopify.com/s/files/1/2358/2817/products/air-jordan-1-retro-high-og-bleached-coral-wethenew-1_1_2000x.png?v=1660753175" alt="Air Jordan" />
+            <div class="card-content">
+              <h1 class="card-header">Air Jordan</h1>
+              <p class="card-text">
+                A partir de <strong>200,00€</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+  <div id="cart-sidebar">
+    <div id="cart">
+      <h2>Shopping Cart</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="cart-items"></tbody>
+      </table>
+      <div id="cart-total"></div>
+    </div>
+  </div>
+
+<script>
+  cookietest();
+  function checkAuth() {
+      fetch("/checkAuth", {
+          method: "GET",
+          credentials: "include"
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.auth === true) {
+              // Show elements for logged in users
+              document.getElementById("login").style.display = "none";
+              document.getElementById("cart-button").style.display = "block";
+              document.getElementById("API").style.display = "block";
+              document.getElementById("logout").style.display = "block";
+          } else {
+              // Show elements for logged out users
+              document.getElementById("login").style.display = "block";
+              document.getElementById("logout").style.display = "none";
+          }
+      });
+  }
+  window.onload = checkAuth;
+</script>
+
+<footer class="sticky-footer">
+  <h2>Lemonade Kickz</h2> 
+  <ul>
+    <li class="items" onclick="loadHome()"> <a>Home</a></li>
+    <li class="items" onclick="loadProducts(), listar()"> <a>Produtos</a></li>
+    <li class="items" onclick="loadAbout()"> <a>Sobre</a></li>
+    <li class="items" onclick="loadReviews()"> <a>Feedback</a></li>
+  </ul>
+  <p> © Copyright Lemonade Kickz.</p>
+</footer>
+</body>
+
+</html>
