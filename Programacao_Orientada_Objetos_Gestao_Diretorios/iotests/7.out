@@ -1,0 +1,33 @@
+Utilizador registado com identificador 1.
+Utilizador registado com identificador 2.
+Bookmark registado com sucesso.
+Bookmark registado com sucesso.
+Bookmark registado com sucesso.
+Bookmark partilhado com sucesso.
+Projeto registado com o identificador 1.
+Utilizador adicionado a projeto com sucesso.
+Diretório criado com sucesso.
+Diretório criado com sucesso.
+Diretório criado com sucesso.
+Bookmark associado a projeto com sucesso.
+Bookmark associado a projeto com sucesso.
+Bookmark associado a projeto com sucesso.
+Primeiro Projeto
+Bookmark C 1 1 [http://www.example.com/3]
+DirA : Bookmark A 1 1 [http://www.example.com/1]
+DirA : Bookmark B 1 2 [http://www.example.com/2]
+Bookmark registado com sucesso.
+Bookmark associado a projeto com sucesso.
+Primeiro Projeto
+Bookmark C 1 1 [http://www.example.com/3]
+DirA : Bookmark A 1 1 [http://www.example.com/1]
+DirA : Bookmark B 1 2 [http://www.example.com/2]
+DirA > SubDirA : Bookmark D 1 1 [http://www.example.com/4]
+Bookmark registado com sucesso.
+Bookmark associado a projeto com sucesso.
+Primeiro Projeto
+Bookmark C 1 1 [http://www.example.com/3]
+DirA : Bookmark A 1 1 [http://www.example.com/1]
+DirA : Bookmark B 1 2 [http://www.example.com/2]
+DirA > SubDirA : Bookmark E 1 1 [http://www.example.com/5]
+DirA > SubDirA : Bookmark D 1 1 [http://www.example.com/4]

@@ -1,0 +1,53 @@
+UR A
+UR B
+UR C
+UL
+BR 1 20220101 Trabalho
+Bookmark A
+http://www.example.com/1
+BR 1 20220101 Trabalho
+Bookmark B
+http://www.example.com/2
+BR 1 20220101 Trabalho
+Bookmark C
+http://www.example.com/3
+BR 1 20100101 Trabalho
+Bookmark D
+http://www.example.com/4
+BR 1 20220101 Trabalho
+Bookmark E
+http://www.example.com/4
+PR 1 202201010
+Primeiro Projeto
+PR 6 202201010000
+Primeiro Projeto
+PR 1 20220101
+Primeiro Projeto
+PAP 1 1 2 Gestor
+PAB 1 1 1
+1 Bookmark A
+
+PAD 1 1 1
+DirB
+PAD 1 1 2
+DirA
+PAD 1 1 1
+DirA > SubDirA
+PAD 1 1 1 
+DirA > SubDirA > SubSubDirA
+PAB 1 1 1
+1 Bookmark B
+DirA > SubDirA
+PAB 1 1 1
+1 Bookmark C
+DirA > SubDirA > SubSubDirA
+PAB 1 1 1
+1 Bookmark D
+DirB
+PAB 1 1 1
+1 Bookmark E
+DirB
+PC 1 1
+
+
+

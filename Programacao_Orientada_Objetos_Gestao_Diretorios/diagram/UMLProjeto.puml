@@ -1,0 +1,131 @@
+@startuml
+package models{
+class User{
+-String nome
+-String userID
++String getNome()
++String getUserID()
++String setUserID()
+}
+
+class Bookmark{
+-Date date
+-String bookmarkName
+-String URl
+-User userID
+-String bookmarkType
++Date getDate()
++String getBookmarkName()
++String getURL()
++User getUserID()
++String getBookmarkType()
+}
+
+Session"1" *-- "0..*"Bookmark
+User"1" <|-- "0..*"Bookmark
+Project"1" *-- "0..*"Bookmark
+
+class Project{
+-Collection<Bookmark> bookmarks
+-Collection<Directory> directoryColl
+-Collection<User> managers
+-Collection<User> members
+-String projectID
+-User userID
+-Date date
++boolean checkPermission(String userID)
++boolean checkDirectoryName(String directoryName)
++void setPermission(String userID)
++Collection<User> getMembers()
++Collection<Directory> getDirectoryColl()
++Collection<Bookmark> getBookmarks()
++boolean hasBookmarkName(String bookmarkName)
++String getProjectID()
++User getUserID()
++Date getDate()
+}
+
+Project"1" *-- "1..*"User
+
+class Directory{
+-String directoryName
+-Collection<Directory> directoyColl
+-User userID
++String getDirectoryName()
++Collection<Directory> getDirectoryColl()
++User getUserID()
+}
+
+Directory"1" *-- "0..*"Directory
+Project"1" *-- "1..*"Directory
+
+
+class Session{
+-Collection<Bookmark> bookmarks
+-String sessionName
+-Date date
+-User userID
++Collection<Bookmark> getBookmarks()
++boolean hasBookmarkName(String bookmarkName)
++String getSessionName()
++Date getDate()
++User getUserID()
+}
+}
+
+Session"1" *-- "1"User
+
+package controllers{
+class BookmarkManagement{
+-Map<String, Project> projects
+-Map<String, Session> sessions
+-Map<String, User> users
+-Collection<Bookmark> bookmarks
++Collection<Project> getProjects()
++Collection<Session> getSessions()
++Collection<User> getUsers()
++Collection<Bookmark> getBookmarks()
++boolean hasUsers()
++boolean hasUserID(String userID)
++boolean hasBookmarkName(String bookmarkName, String userID)
++boolean hasProject(String projectID)
++boolean hasSessionName(String sessionName)
++boolean hasDirectoryInProject(String projectID, String directoryName)
++boolean checkDate()
++boolean checkBookmarkType(String bookmarkType)
++boolean checkBookmarkPermissions(String bookmarkName)
++boolean checkBookmarkProjectAssociation(String projectID, String bookmarkName)
++boolean checkUserPermission(String userID, String projectID)
++boolean checkDirectoryHierarchy(String projectID, String directoryName)
++boolean checkBookmarkInSession(String sessionName, String bookmarkName)
++String getSessionDate(String sessionName)
++String registerClient(String Nome, Collection Users)
++Collection listUsers(Collection Users)
++void registerBookmark(String userID, Date date, String bookmarkType, String bookmarkName, String URl)
++void shareBookmark(String userID, userID2, String bookmarkName)
++String createProject(String userID, Date date, String projectName)
++void addMemberToProject(String userID, String projectID, String userID2, String userType)
++String consultProject(String userID, String projectID)
++void addBookmarkProject(String userID, String projectID, String UserID, String bookmarkID, String bookmarkName)
++void removeBookmarkProject(String userID, String projectID, String UserID, String bookmarkID, String bookmarkName)
++void addDirectoryProject(String userID, String projectID, String UserID, Collection directoryColl)
++void removeDirectoryProject(String userID, String projectID, String UserID, Collection directoryColl)
++void createSession(String userID, Date date, String sessionName)
++String consultSession(String userID, String sessionName)
++void addBookmarkSession(String userID, String sessionName, String bookmarkID, String bookmarkName)
++void removeBookmarkSession(String userID, String sessionName, String bookmarkID, String bookmarkName)
++void Save(String fileName)
++{static} BookmarkManagement load (String fileName)
+}
+}
+
+package views{
+class CLI{}
+}
+
+CLI"0..1" -- "1"BookmarkManagement
+BookmarkManagement"1" *-- "0..*"Project
+BookmarkManagement"1" *-- "0..*"Session
+BookmarkManagement"1" *-- "0..*"User
+BookmarkManagement"1" *-- "0..*"Bookmark
+@enduml

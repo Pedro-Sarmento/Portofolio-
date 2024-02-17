@@ -1,0 +1,153 @@
+@startuml
+class models.Bookmark {
+- String date
+- String type
+- String name
+- String url
+- String creatorID
++ String getCreatorID()
++ String getName()
++ String getData()
++ String getURL()
++ String getType()
+}
+class models.Session {
+- String name
+- String date
+- Map<String,Bookmark> bookmarks
++ void addBookmark(String,Bookmark)
++ boolean hasBookmark(String)
++ void removeBookmark(String)
++ String getDate()
++ ArrayList<Bookmark> getBookmarksUnsorted()
+- ArrayList<Bookmark> getBookmarksByTpye()
++ ArrayList<Bookmark> getBookmarksByName()
++ ArrayList<Bookmark> getSortedBookmarks()
++ String getName()
+}
+class views.CLI {
+}
+class models.User {
+- String id
+- String name
++ Map<String,Bookmark> bookmarks
+- Map<String,Project> projects
+- Map<String,Session> sessions
+- long projectIdGenerator
++ String getID()
++ String getName()
++ Collection<Bookmark> getBookmarks()
++ void addBookmark(Bookmark)
++ Project getProject(String)
++ String getBookmarkType(String)
++ String createNewProject(String,String)
++ boolean hasProject(String)
++ void createNewSession(String,String)
++ boolean hasSession(String)
++ Session getSession(String)
++ Bookmark getBookmark(String)
+}
+class models.Directory {
+- String name
+- Map<String,DirectoryBookmark> bookmarks
+- Map<String,Directory> directories
++ String getName()
++ void addBookmark(String,User,User,Bookmark)
++ boolean hasBookmark(String)
++ void removeBookmark(String)
++ void addDirectory(String)
++ void printBookmarksAndPath(String)
+- Collection<Directory> getDirectoryCollection()
++ Map<String,Directory> getDirectories()
++ void checkNextDirectory(String)
++ ArrayList<DirectoryBookmark> getBookmarks()
++ Collection<DirectoryBookmark> getSortedBookmarks()
+- ArrayList<DirectoryBookmark> getBookmarksByDate()
+}
+class controllers.BookmarkManagement {
++ Map<String,User> users
+- long useridGenerator
++ String registerUser(String)
++ Collection<User> getUsers()
++ boolean hasUsers()
++ boolean hasUserID(String)
++ boolean hasBookmarkName(String,String)
++ boolean checkDate(String)
++ boolean checkBookmarkType(String)
++ void registerBookmark(String,String,String,String,String)
++ boolean checkBookmarkPermissions(String,String,String)
++ void shareBookmark(String,String,String)
++ String createProject(String,String,String)
++ boolean hasProjectID(String,String)
++ void addMemberToProject(String,String,String,String)
++ void addBookmarkProject(String,String,String,String,String,String)
++ boolean checkBookmarkProjectAssociation(String,String,String)
++ void removeBookmarkProject(String,String,String,String,String)
++ void addDirectoryToProject(String,String,String,String)
++ void removeDirectoryProject(String,String,String,String)
++ boolean checkUserPermission(String,String,String)
++ boolean hasDirectoryInProject(String,String,String)
++ boolean checkDirectoryHierarchy(String,String,String)
++ boolean hasSessionName(String,String)
++ void createSession(String,String,String)
++ void addBookmarkSession(String,String,String,String)
++ boolean checkBookmarkInSession(String,String,String)
++ void removeBookmarkSession(String,String,String)
++ Session getUserSession(String,String)
++ void save(String)
++ {static} BookmarkManagement load(String)
++ Project getUserProject(String,String)
+}
+class models.ProjectBookmark {
+- User addingUser
+- User creatorUser
+- Bookmark bookmark
++ String getBookmarkName()
++ String getBookmarkDate()
++ User getAddingUser()
++ User getCreator()
++ Bookmark getBookmark()
+}
+class Program {
++ {static} void main(String[])
+}
+class models.Project {
+- String id
+- String date
+- String name
+- Map<String,String> usersInProject
+- Map<String,ProjectBookmark> bookmarks
+- Map<String,Directory> family
++ String getID()
++ Collection<Directory> getFamily()
++ void addMember(String,String)
++ boolean hasPermissions(String)
++ void addDirectory(String)
+- Directory getDirectory(String[])
++ boolean hasDirectory(String[])
+- Directory getDirectoryParent(String[])
++ void removeDirectory(String)
++ void addBookmark(User,User,Bookmark,String)
++ boolean hasBookmark(String)
++ void removeBookmark(String,String,String)
++ boolean checkHierarchy(String)
++ String getName()
++ boolean isBookmarksEmpty()
++ ArrayList<ProjectBookmark> getBookmarks()
++ Collection<ProjectBookmark> getSortedBookmarks()
+- ArrayList<ProjectBookmark> getBookmarksByDate()
+}
+class models.DirectoryBookmark {
+- User addingUser
+- User creatorUser
+- Bookmark bookmark
++ String getBookmarkName()
++ String getBookmarkDate()
++ User getAddingUser()
++ User getCreator()
++ Bookmark getBookmark()
+}
+
+
+controllers.Serializable <|.. controllers.BookmarkManagement
+@enduml

@@ -1,0 +1,32 @@
+UR A
+UR B
+PAD 1 1 3 
+DirA
+UR C
+PAD 1 1 3 
+DirA
+BR 1 20220101 Trabalho
+Bookmark A
+http://www.example.com/1
+BR 1 20220101 Trabalho
+Bookmark B
+http://www.example.com/1
+BP 1 2
+Bookmark B
+PR 1 20220101
+Primeiro Projeto
+PAP 1 1 2 Gestor
+PAP 1 1 3 Membro
+PAD 1 1 3 
+DirA
+PAD 1 1 2
+DirA
+PAD 1 1 2
+DirA
+PAD 1 1 2
+DirA > DirB > DirC
+PRD 1 1 3
+DirA
+PRD 1 1 2
+DirA
+

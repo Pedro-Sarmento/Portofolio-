@@ -1,0 +1,25 @@
+PAB 1 1 1
+1 1
+
+UR A
+PAB 1 1 1
+1 Bookmark
+
+PR 1 20220101
+Primeiro Projeto
+PAB 1 1 1
+1 Bookmark
+
+BR 1 20220101 Pessoal
+Bookmark Pessoal
+http://www.example.com/1
+PAB 1 1 1
+1 Bookmark Pessoal
+
+BR 1 20220101 Trabalho
+Segundo Bookmark
+http://www.example.com/2
+PAB 1 1 1
+1 Segundo Bookmark
+
+PC 1 1

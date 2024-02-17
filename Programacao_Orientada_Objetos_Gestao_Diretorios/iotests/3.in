@@ -1,0 +1,18 @@
+UR A
+BR 1 20220101 Pessoal
+Primeiro Bookmark
+http://www.example.com/1
+BR 1 20220101 Pessoal
+Segundo Bookmark
+http://www.example.com/2
+BP 2 3
+Um Bookmark
+BP 1 2
+Um Bookmark
+UR B
+BP 1 2
+Um Bookmark
+BP 1 2
+Primeiro Bookmark
+BP 1 2
+Segundo Bookmark
